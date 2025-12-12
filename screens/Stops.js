@@ -1,21 +1,19 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import Map from '../components/Map';
 
 export default function Stops() {
-    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
-            <Text>Page arrêts !</Text>
+            <Map/>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#c0459dff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: '#b22c2cff',
     },
 });

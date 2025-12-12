@@ -4,7 +4,6 @@ import Profile from "../screens/Profile";
 
 import { BottomNavigation } from 'react-native-paper';
 import { useState } from "react";
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function TabNavigator() {
     const [index, setIndex] = useState(0);
