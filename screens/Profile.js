@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function Profile() {
     return (
         <View style={styles.container}>
-            <Text>A Page 3</Text>
+            <Text>Page progil !</Text>
         </View>
     )
 }

@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Favorites() {
     const navigation = useNavigation();
     return (
         <View style={styles.container}>
-            <Text>A Page 2</Text>
-            <Button title="Go to A" onPress={() => navigation.navigate('A')} />
+            <Text>Page favorits !</Text>
         </View>
     )
 }
