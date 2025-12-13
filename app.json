@@ -25,7 +25,8 @@
         "googleMaps": {
           "apiKey": "API_KEY"
         }
-      }
+      },
+      "package": "com.anonymous.mobicitymobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"

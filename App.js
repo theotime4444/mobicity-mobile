@@ -1,29 +1,30 @@
-import { BottomNavigation, PaperProvider } from 'react-native-paper';
-import { StyleSheet, View, SafeAreaView, SafeAreaViewBase } from 'react-native';
+import 'react-native-reanimated';
+import { StyleSheet } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import TabNavigator from './components/TabNavigator';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
-
 export default function App() {
-    return (
+  return (
+    <GestureHandlerRootView style={styles.container}>
+      <BottomSheetModalProvider>
         <PaperProvider>
-            <SafeAreaProvider>
-                <NavigationContainer>
-                    <StatusBar backgroundColor={'#FFC4B6'} barStyle='dark'/> 
-                    <TabNavigator/>
-                </NavigationContainer>
-            </SafeAreaProvider>
+          <NavigationContainer>
+            <StatusBar backgroundColor="#FFC4B6" barStyle="dark" />
+            <TabNavigator />
+          </NavigationContainer>
         </PaperProvider>
-    );
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
+  );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#000',
-        alignItems: 'center',
         justifyContent: 'center',
     },
 });

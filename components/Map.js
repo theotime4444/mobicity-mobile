@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
@@ -42,7 +41,6 @@ export default function Map({
 const styles = StyleSheet.create({
   container: { flex: 1 },
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height - 200,
+    flex: 1,
   },
 });

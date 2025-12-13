@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Map from '../components/Map';
+import Search from '../components/Search';
 
 export default function Favorites() {
 
@@ -27,6 +28,13 @@ export default function Favorites() {
             <Map 
                 points={favoritePoints}  
             />
+            <View style={{
+                position: 'absolute',
+                top: '5%', 
+                width: '100%'
+            }}>
+                <Search/>
+            </View>
         </View>
     );
 }
