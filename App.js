@@ -13,7 +13,7 @@ export default function App() {
       <BottomSheetModalProvider>
         <PaperProvider>
           <NavigationContainer>
-            <StatusBar backgroundColor="#FFC4B6" barStyle="dark" />
+            <StatusBar backgroundColor="#FFC4B6" barStyle='dark-content'/>
             <TabNavigator />
           </NavigationContainer>
         </PaperProvider>

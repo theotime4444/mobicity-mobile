@@ -24,6 +24,7 @@ export default function TabNavigator() {
             navigationState={{ index, routes }}
             onIndexChange={setIndex}
             renderScene={renderScene}
+            keyboardHidesNavigationBar={false}
         />
     );
 }

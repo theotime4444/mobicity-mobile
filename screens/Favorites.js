@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Map from '../components/Map';
 import Search from '../components/Search';
+import BottomPanel from '../components/BottomPanel';
 
 export default function Favorites() {
 
@@ -26,7 +27,7 @@ export default function Favorites() {
     return (
         <View style={styles.container}>
             <Map 
-                points={favoritePoints}  
+                points={favoritePoints}
             />
             <View style={{
                 position: 'absolute',
@@ -35,6 +36,8 @@ export default function Favorites() {
             }}>
                 <Search/>
             </View>
+
+            <BottomPanel/>
         </View>
     );
 }
@@ -42,6 +45,5 @@ export default function Favorites() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#b22c2cff',
     },
 });
