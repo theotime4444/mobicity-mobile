@@ -23,7 +23,7 @@
       "edgeToEdgeEnabled": true,
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyAY9Ik_VeJBu0zx94qldYBZm-1yPnIuSyE"
+          "apiKey": "API_KEY"
         }
       },
       "package": "com.anonymous.mobicitymobile"
