@@ -9,7 +9,7 @@ export default function TabNavigator() {
     const [index, setIndex] = useState(0);
     const routes = [
         { key: 'stops', title: 'Arrêts', focusedIcon: 'map-marker', unfocusedIcon: 'map-marker-outline' },
-        { key: 'favorites', title: 'Favorits', focusedIcon: 'star', unfocusedIcon: 'star-outline' },
+        { key: 'favorites', title: 'Favoris', focusedIcon: 'star', unfocusedIcon: 'star-outline' },
         { key: 'profile', title: 'Profil', focusedIcon: 'account-circle', unfocusedIcon: 'account-circle-outline' },
     ];
 
