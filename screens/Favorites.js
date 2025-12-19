@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Map from '../components/Map';
+import TransportMap from '../components/TransportMap';
 import Search from '../components/Search';
 import BottomPanel from '../components/BottomPanel';
 
@@ -10,7 +10,6 @@ export default function Favorites() {
         {
             id: 1,
             name: "Gembloux",
-            latitude: 48.8809,
             latitude:50.5602, 
             longitude:4.6918,
             type: "test"
@@ -26,7 +25,7 @@ export default function Favorites() {
 
     return (
         <View style={styles.container}>
-            <Map 
+            <TransportMap 
                 points={favoritePoints}
             />
             <View style={{

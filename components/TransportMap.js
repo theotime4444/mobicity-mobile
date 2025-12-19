@@ -1,13 +1,16 @@
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { useSelector } from 'react-redux';
 
-export default function Map({
-  points = [],           // receive the list of points
-  userPosition = null,
+export default function TransportMap({ 
+  points = [],
   onMarkerPress = null,
 }) {
 
-  const defaultCenter = {
+  const { latitude, longitude } = useSelector((state) => state.location);
+  const userPosition = latitude && longitude ? { latitude, longitude } : null;
+
+const defaultCenter = {
     latitude: userPosition?.latitude || 50.4649,
     longitude: userPosition?.longitude || 4.8650,
     latitudeDelta: 0.05,
@@ -18,9 +21,16 @@ export default function Map({
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        provider="google"
-        initialRegion={defaultCenter}
+        region={defaultCenter}
       >
+        {userPosition && (
+          <Marker 
+            coordinate={userPosition}
+            title="Votre position"
+            pinColor="blue"
+          />
+        )}
+        
         {points.map(point => (
           <Marker
             key={point.id}
@@ -30,6 +40,7 @@ export default function Map({
             }}
             title={point.name}
             description={point.type}
+            pinColor="red"
             onPress={() => onMarkerPress && onMarkerPress(point)}
           />
         ))}

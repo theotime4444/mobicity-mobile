@@ -7,19 +7,24 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import TabNavigator from './components/TabNavigator';
 
+import { Provider } from 'react-redux';
+import { store } from './store/store.js';
+
 export default function App() {
   
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <BottomSheetModalProvider>
-        <PaperProvider>
-          <NavigationContainer>
-            <StatusBar backgroundColor="#FFC4B6" style='light'/>
-            <TabNavigator />
-          </NavigationContainer>
-        </PaperProvider>
-      </BottomSheetModalProvider>
+    <Provider store={store}>
+      <GestureHandlerRootView style={styles.container}>
+        <BottomSheetModalProvider>
+          <PaperProvider>
+            <NavigationContainer>
+              <StatusBar backgroundColor="#FFC4B6" style='light'/>
+              <TabNavigator />
+            </NavigationContainer>
+          </PaperProvider>
+        </BottomSheetModalProvider>
     </GestureHandlerRootView>
+    </Provider>
   );
 }
 
