@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { Chip, Text } from 'react-native-paper';
 import { useState } from 'react';
 import StopsList from './StopsList';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function BottomPanel() {
     const snapPoints = useMemo(() => ['25%', '95%'], []);
@@ -24,7 +25,7 @@ export default function BottomPanel() {
         >
             
             <BottomSheetScrollView>
-                <View style={styles.chipsView}>
+                <ScrollView contentContainerStyle={styles.chipsView} horizontal showsHorizontalScrollIndicator={false}>
                 {/*mettre une scrollview horizontale avec une flatlist peut etre*/}
                     <Chip icon="arrow-down-drop-circle-outline" onPress={() => console.log('Pressed')}>
                         Distance
@@ -35,10 +36,13 @@ export default function BottomPanel() {
                     <Chip mode={selectedCategoryId === 2 ? 'flat' : 'outlined' } icon="train" onPress={() => toggleCategory(2)}>
                         Train
                     </Chip>
+                    <Chip mode={selectedCategoryId === 3 ? 'flat' : 'outlined' } icon="car" onPress={() => toggleCategory(3)}>
+                        Cambio
+                    </Chip>
                     <Chip icon="arrow-down-drop-circle-outline" onPress={() => console.log('Pressed')} selected={true}>
                         {stopsNb} arrêts
                     </Chip>
-                </View>
+                </ScrollView>
                 
                 <StopsList stopsNb={stopsNb} categoryId={selectedCategoryId}/>
                 
@@ -49,12 +53,9 @@ export default function BottomPanel() {
 
 const styles = StyleSheet.create({
     chipsView: {
-        flex: 1,
-        flexDirection: 'row',
         paddingLeft: 20,
         paddingRight: 20,
         paddingTop: 10,
-        flexWrap: 'wrap',
         columnGap: 3,
     }
 });

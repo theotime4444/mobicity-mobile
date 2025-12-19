@@ -25,6 +25,7 @@ export default function TabNavigator() {
             onIndexChange={setIndex}
             renderScene={renderScene}
             keyboardHidesNavigationBar={false}
+            shifting={true}
         />
     );
 }
