@@ -21,7 +21,7 @@ const defaultCenter = {
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        region={defaultCenter}
+        initialRegion={defaultCenter}
       >
         {userPosition && (
           <Marker 

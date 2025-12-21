@@ -1,5 +1,5 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import TransportMap from '../components/TransportMap';
 import Search from '../components/Search';
 import BottomPanel from '../components/BottomPanel';
@@ -28,13 +28,10 @@ export default function Favorites() {
             <TransportMap 
                 points={favoritePoints}
             />
-            <View style={{
-                position: 'absolute',
-                top: '5%', 
-                width: '100%'
-            }}>
+
+            <SafeAreaView style={styles.searchView}>
                 <Search/>
-            </View>
+            </SafeAreaView>
 
             <BottomPanel/>
         </View>
@@ -45,4 +42,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    searchView: {
+        position: 'absolute',
+        top: 5,
+        width: '95%',
+        alignSelf: 'center',
+    }
 });
