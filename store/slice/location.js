@@ -7,7 +7,7 @@ export const locationSlice = createSlice( {
         longitude: null,
         isLoading: false,
         error: null,
-        retryAttempt: 0, // <-- NOUVEAU : Compteur de tentatives pour le re-fetch
+        retryAttempt: 0,
     },
     reducers:{
         setLocation: (state, action) => {

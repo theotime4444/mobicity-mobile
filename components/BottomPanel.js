@@ -44,8 +44,7 @@ export default function BottomPanel() {
                     </Chip>
                 </ScrollView>
                 
-                <StopsList stopsNb={stopsNb} categoryId={selectedCategoryId}/>
-                
+                <StopsList stopsNb={stopsNb} categoryId={selectedCategoryId} />
             </BottomSheetScrollView>
         </BottomSheet>
     );
