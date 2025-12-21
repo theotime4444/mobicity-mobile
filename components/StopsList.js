@@ -11,7 +11,7 @@ const CATEGORY_ICONS = {
   3: 'car',
 };
 
-export default function StopsList({radius, stopsNb, categoryId, search, location}) {    
+export default function StopsList({radius, stopsNb, categoryId, search}) {    
     const [stops, setStops] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -36,12 +36,12 @@ export default function StopsList({radius, stopsNb, categoryId, search, location
         setLoading(true);
         try {
             const data = await getTransportLocationsNearby(
-            latitude,
-            longitude,
-            radius || 5,
-            stopsNb,
-            categoryId === -1 ? null : categoryId,
-            search
+                latitude,
+                longitude,
+                radius || 5,
+                stopsNb,
+                categoryId === -1 ? null : categoryId,
+                search
             );
             setStops(data);
         } catch (err) {
