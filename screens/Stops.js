@@ -1,13 +1,15 @@
 import { useState, useMemo } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button } from 'react-native-paper'
-import { useSelector, useDispatch } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import TransportMap from '../components/TransportMap'; 
 import Search from '../components/Search';
 import BottomPanel from '../components/BottomPanel'
+
+import { useSelector, useDispatch } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 import { fetchLocationRetry } from '../store/slice/location';
-import TransportMap from '../components/TransportMap';
 
 
 export default function Stops() {
@@ -40,9 +42,9 @@ export default function Stops() {
             )}
 
 
-            <View style={styles.searchContainer}>
-            	<Search />
-            </View>
+            <SafeAreaView style={styles.searchView}>
+                <Search/>
+            </SafeAreaView>
 
             <BottomPanel/>
         </View>
@@ -84,5 +86,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
     textAlign: 'center',
+  },
+  searchView: {
+    position: 'absolute',
+    top: 5,
+    width: '95%',
+    alignSelf: 'center',
   }
 });

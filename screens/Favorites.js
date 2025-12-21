@@ -1,9 +1,9 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import TransportMap from '../components/TransportMap';
 import Search from '../components/Search';
 import BottomPanel from '../components/BottomPanel';
 import { useIsFocused } from '@react-navigation/native';
-import TransportMap from '../components/TransportMap';
 
 export default function Favorites() {
     const isFocused = useIsFocused();
@@ -29,9 +29,9 @@ export default function Favorites() {
         <View style={styles.container}>
             {isFocused && <TransportMap />}        
 
-            <View style={styles.searchContainer}>
-            	<Search/>
-            </View>
+            <SafeAreaView style={styles.searchView}>
+                <Search/>
+            </SafeAreaView>
 
             <BottomPanel/>
         </View>
@@ -52,5 +52,11 @@ const styles = StyleSheet.create({
     zIndex: 100, 
     top: 100, 
     left: 20
+  },
+  searchView: {
+      position: 'absolute',
+      top: 5,
+      width: '95%',
+      alignSelf: 'center',
   }
 });

@@ -15,3 +15,10 @@ export const currentUserRequest = async (token) => {
     const response = await axios.get(`${lienAPI}/users/me`, { headers: { Authorization: `Bearer ${token}`}});
     return response.data
 }
+
+export const updateCurrentUserRequest = async (token, userData) => {
+    const response = await axios.patch(`${lienAPI}/users/me`, userData, { 
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+}
