@@ -1,10 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import TransportMap from '../components/TransportMap';
 import Search from '../components/Search';
 import BottomPanel from '../components/BottomPanel';
+import { useIsFocused } from '@react-navigation/native';
+import TransportMap from '../components/TransportMap';
 
 export default function Favorites() {
+    const isFocused = useIsFocused();
 
     const favoritePoints = [
         {
@@ -25,15 +27,10 @@ export default function Favorites() {
 
     return (
         <View style={styles.container}>
-            <TransportMap 
-                points={favoritePoints}
-            />
-            <View style={{
-                position: 'absolute',
-                top: '5%', 
-                width: '100%'
-            }}>
-                <Search/>
+            {isFocused && <TransportMap />}        
+
+            <View style={styles.searchContainer}>
+            	<Search/>
             </View>
 
             <BottomPanel/>
@@ -42,7 +39,18 @@ export default function Favorites() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
+  container: {
+    flex: 1,
+  },
+  searchContainer: {
+    position: 'absolute',
+    top: '5%', 
+    width: '100%'
+  },
+  loadingMessage: {
+    position: 'absolute', 
+    zIndex: 100, 
+    top: 100, 
+    left: 20
+  }
 });

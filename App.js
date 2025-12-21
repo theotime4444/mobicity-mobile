@@ -5,10 +5,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { Provider, useSelector } from 'react-redux'; //
-import { store } from './store/store.js'; //
+import { Provider, useSelector } from 'react-redux'; 
+import { store } from './store/store.js'; 
 
-import TabNavigator from './components/TabNavigator'; //
+import TabNavigator from './components/TabNavigator'; 
 import Login from './screens/Login'; 
 
 function RootNavigation() {
@@ -16,8 +16,8 @@ function RootNavigation() {
 
   return (
     <NavigationContainer>
-      <StatusBar backgroundColor="#FFC4B6" style="light" />
-      {token ? <TabNavigator /> : <Login />}
+        <StatusBar backgroundColor="#FFC4B6" style="light" />
+        <TabNavigator/>
     </NavigationContainer>
   );
 }

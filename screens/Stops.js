@@ -1,25 +1,25 @@
+import { useState, useMemo } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button } from 'react-native-paper'
-
-import TransportMap from '../components/TransportMap'; 
-import Search from '../components/Search';
-import { useMemo } from 'react';
-import { useState } from 'react';
-import BottomPanel from '../components/BottomPanel'
-
 import { useSelector, useDispatch } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+
+import Search from '../components/Search';
+import BottomPanel from '../components/BottomPanel'
 import { fetchLocationRetry } from '../store/slice/location';
+import TransportMap from '../components/TransportMap';
 
 
 export default function Stops() {
     const snapPoints = useMemo(() => ['25%', '95%'], []);
     const [stopsNb, setStopsNb] = useState(5);
-
     const { isLoading, error } = useSelector(state => state.location); 
     const dispatch = useDispatch();
-
+	const isFocused = useIsFocused();
     return (
         <View style={styles.container}>
+			{isFocused && <TransportMap />}
+			
             {isLoading && <Text style={styles.loadingMessage}>Chargement position...</Text>}
             
             {error && (
@@ -30,7 +30,7 @@ export default function Stops() {
                         onPress={() => dispatch(fetchLocationRetry())}>
                         Relancer la recherche de position
                     </Button>
-                    {/* 💡 NOUVEAU MESSAGE D'AIDE CLAIR */}
+
                     {error.includes("refusée") && (
                         <Text style={styles.tipText}>
                             Veuillez accorder les permission de localisation dans le paramètres.
@@ -39,12 +39,9 @@ export default function Stops() {
                 </View>
             )}
 
-            <TransportMap />
 
-            <View
-                style={styles.searchContainer} 
-            >
-                <Search />
+            <View style={styles.searchContainer}>
+            	<Search />
             </View>
 
             <BottomPanel/>

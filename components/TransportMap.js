@@ -1,14 +1,12 @@
+import { memo } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
-export default function TransportMap({ 
-  points = [],
-  onMarkerPress = null,
-}) {
-
+const TransportMap = memo(() => {
   const { latitude, longitude } = useSelector((state) => state.location);
   const userPosition = latitude && longitude ? { latitude, longitude } : null;
+  const points = useSelector((state => state.transportLocations.points));
 
 const defaultCenter = {
     latitude: userPosition?.latitude || 50.4649,
@@ -21,7 +19,12 @@ const defaultCenter = {
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        region={defaultCenter}
+        initialRegion={defaultCenter}
+        showsCompass={false}
+        showsBuildings={false}
+        showsPointsOfInterest={false}
+        showsIndoors={false}
+        customMapStyle={cleanMapStyle}
       >
         {userPosition && (
           <Marker 
@@ -35,8 +38,8 @@ const defaultCenter = {
           <Marker
             key={point.id}
             coordinate={{
-              latitude: point.latitude,
-              longitude: point.longitude,
+              latitude: Number(point.latitude),
+              longitude: Number(point.longitude),
             }}
             title={point.name}
             description={point.type}
@@ -47,7 +50,7 @@ const defaultCenter = {
       </MapView>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
@@ -55,3 +58,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+const cleanMapStyle = [
+  {
+    "featureType": "poi",
+    "elementType": "labels",
+    "stylers": [{ "visibility": "off" }]
+  },
+  {
+    "featureType": "transit",
+    "elementType": "labels.icon",
+    "stylers": [{ "visibility": "off" }]
+  }
+];
+
+
+export default TransportMap;

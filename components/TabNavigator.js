@@ -48,11 +48,6 @@ export default function TabNavigator() {
         fetchUserLocation();
     }, [dispatch, retryAttempt]);
 
-    const renderScene = BottomNavigation.SceneMap({
-        stops: () => <Stops/>,
-        favorites: () => <Favorites/>,
-        profile: () => <Profile/>
-    });
 
     return (
         <BottomNavigation
@@ -64,3 +59,9 @@ export default function TabNavigator() {
         />
     );
 }
+
+const renderScene = BottomNavigation.SceneMap({
+    stops: () => <Stops/>,
+    favorites: () => <Favorites/>,
+    profile: () => <Profile/>
+});

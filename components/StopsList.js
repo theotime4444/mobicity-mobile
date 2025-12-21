@@ -2,8 +2,9 @@ import { List } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTransportLocationsNearby, getTransportLocation } from '../api/transportLocations';
+import { setPoints } from '../store/slice/transportLocation';
 
 const CATEGORY_ICONS = {
   1: 'bus',
@@ -12,25 +13,13 @@ const CATEGORY_ICONS = {
 };
 
 export default function StopsList({radius, stopsNb, categoryId, search, location}) {    
-    const [stops, setStops] = useState([]);
+    const dispatch = useDispatch();
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { latitude, longitude } = useSelector((state) => state.location);
 
-    // const getStops = async () => {
-    //     // await axios.get(`http://192.168.0.51:3001/transport-locations/nearby?&limit=${stopsNb}&latitude=${location.latitude}&longitude=${location.longitude}`)
-    //     await axios.get("http://192.168.0.51:3001/transport-locations/nearby?&limit=15&latitude=50.4689&longitude=4.8708")
-    //     .then((response) => {
-    //         setStops(response.data);
-    //     })
-    //     .finally(() => {
-    //         setLoading(false);
-    //     })
-    // }
-
-    // useEffect(() => {
-    //     getStops();
-    // }, []);
+    const stops = useSelector((state) => state.transportLocations.points);
 
     const getStops = async () => {
         setLoading(true);
@@ -43,7 +32,7 @@ export default function StopsList({radius, stopsNb, categoryId, search, location
             categoryId === -1 ? null : categoryId,
             search
             );
-            setStops(data);
+            dispatch(setPoints(data));
         } catch (err) {
             console.error(err);
             setError("Erreur lors du chargement des arrêts");
@@ -56,7 +45,7 @@ export default function StopsList({radius, stopsNb, categoryId, search, location
         getStops();
     }, [latitude, longitude, radius, stopsNb, categoryId, search]);
 
-    if (loading) return <ActivityIndicator animating={true}/> 
+    if (loading) return <ActivityIndicator animating={true}/> ;
 
     if (error) return <Text style={styles.error}>{error}</Text>;
 
