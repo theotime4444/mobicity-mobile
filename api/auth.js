@@ -10,3 +10,8 @@ export const registerRequest = async (firstName, lastName, email, password) => {
     const response = await axios.post(`${lienAPI}/auth/register`, {firstName, lastName, email, password})
     return response.data;
 }
+
+export const currentUserRequest = async (token) => {
+    const response = await axios.get(`${lienAPI}/users/me`, { headers: { Authorization: `Bearer ${token}`}});
+    return response.data
+}

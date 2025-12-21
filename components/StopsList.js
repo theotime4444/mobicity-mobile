@@ -12,25 +12,23 @@ const CATEGORY_ICONS = {
   3: 'car',
 };
 
-export default function StopsList({radius, stopsNb, categoryId, search, location}) {    
-    const dispatch = useDispatch();
-
+export default function StopsList({radius, stopsNb, categoryId, search}) {    
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { latitude, longitude } = useSelector((state) => state.location);
-
+    const dispatch = useDispatch();
     const stops = useSelector((state) => state.transportLocations.points);
 
     const getStops = async () => {
         setLoading(true);
         try {
             const data = await getTransportLocationsNearby(
-            latitude,
-            longitude,
-            radius || 5,
-            stopsNb,
-            categoryId === -1 ? null : categoryId,
-            search
+                latitude,
+                longitude,
+                radius || 5,
+                stopsNb,
+                categoryId === -1 ? null : categoryId,
+                search
             );
             dispatch(setPoints(data));
         } catch (err) {
@@ -49,6 +47,9 @@ export default function StopsList({radius, stopsNb, categoryId, search, location
 
     if (error) return <Text style={styles.error}>{error}</Text>;
 
+    if (!stops || stops.length === 0) return <Text style={{textAlign: 'center', marginTop: 20}}>Aucun arrêt trouvé</Text>;
+    
+    
     return (
         stops.map((stop) =>
             <List.Item

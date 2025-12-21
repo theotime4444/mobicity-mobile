@@ -9,7 +9,6 @@ import { Provider, useSelector } from 'react-redux';
 import { store } from './store/store.js'; 
 
 import TabNavigator from './components/TabNavigator'; 
-import Login from './screens/Login'; 
 
 function RootNavigation() {
   const token = useSelector((state) => state.login.token);

@@ -13,7 +13,7 @@ import TransportMap from '../components/TransportMap';
 export default function Stops() {
     const snapPoints = useMemo(() => ['25%', '95%'], []);
     const [stopsNb, setStopsNb] = useState(5);
-    const { isLoading, error } = useSelector(state => state.location); 
+    const { isLoading, error } = useSelector((state) => state.location); 
     const dispatch = useDispatch();
 	const isFocused = useIsFocused();
     return (

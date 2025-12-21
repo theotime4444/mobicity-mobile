@@ -2,8 +2,9 @@ import Stops from "../screens/Stops";
 import Favorites from "../screens/Favorites";
 import Profile from "../screens/Profile";
 
-import { BottomNavigation } from 'react-native-paper';
+import { BottomNavigation, ActivityIndicator, Text } from 'react-native-paper';
 import { useState, useEffect } from "react"; 
+import { View, StyleSheet } from 'react-native';
 
 import * as Location from 'expo-location';
 import { useDispatch, useSelector} from 'react-redux';
@@ -18,6 +19,7 @@ export default function TabNavigator() {
     ];
 
     const dispatch = useDispatch(); 
+    const { latitude, longitude, error } = useSelector(state => state.location)
     const retryAttempt = useSelector(state => state.location.retryAttempt);
 
     useEffect(() => {
@@ -48,6 +50,15 @@ export default function TabNavigator() {
         fetchUserLocation();
     }, [dispatch, retryAttempt]);
 
+    if ((!latitude || !longitude) && !error) {
+        return (
+            <View style={styles.center}>
+                <ActivityIndicator size="large" color="#FFC4B6" />
+                <Text>Récupération de votre position...</Text>
+            </View>
+        );
+    }
+
 
     return (
         <BottomNavigation
@@ -59,6 +70,15 @@ export default function TabNavigator() {
         />
     );
 }
+
+const styles = StyleSheet.create({
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+    }
+});
 
 const renderScene = BottomNavigation.SceneMap({
     stops: () => <Stops/>,

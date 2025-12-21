@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginRequest, registerRequest } from '../api/auth';
-import { setLoginSucces, setLoginError } from '../store/slice/login';
+import { currentUserRequest, loginRequest, registerRequest } from '../api/auth';
+import { setLoginSucces, setLoginError, setUser } from '../store/slice/login';
 
 export default function Login() {
     const [isLogin, setIsLogin] = useState(true);
@@ -25,8 +25,6 @@ export default function Login() {
         const passwordRegex = /^(?=.{6,})[^'"\\;*\-]*$/;
         const listeNoire = ` ' " \\ ; * - `;
 
-
-
         if (!emailRegex.test(email)){
             dispatch(setLoginError("Veuillez utilisez une adresse email valide."));
             return;
@@ -43,6 +41,8 @@ export default function Login() {
             if (isLogin) {
                 const data = await loginRequest(email, password);
                 dispatch(setLoginSucces(data.token));
+                const user = await currentUserRequest(data.token)
+                dispatch(setUser(user))
             } else {
                 await registerRequest(firstName, lastName, email, password );
                 setSuccessMessage("Compte créé avec succès ! Connectez-vous.");
