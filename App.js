@@ -15,7 +15,7 @@ function RootNavigation() {
 
   return (
     <NavigationContainer>
-        <StatusBar backgroundColor="#FFC4B6" style="light" />
+        <StatusBar backgroundColor="#FFC4B6" style="dark" />
         <TabNavigator/>
     </NavigationContainer>
   );

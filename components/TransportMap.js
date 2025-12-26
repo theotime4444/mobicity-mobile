@@ -25,6 +25,7 @@ const defaultCenter = {
         showsPointsOfInterest={false}
         showsIndoors={false}
         customMapStyle={cleanMapStyle}
+        uer
       >
         {userPosition && (
           <Marker 
@@ -71,6 +72,5 @@ const cleanMapStyle = [
     "stylers": [{ "visibility": "off" }]
   }
 ];
-
 
 export default TransportMap;
