@@ -28,36 +28,35 @@ const defaultCenter = {
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={defaultCenter}
-        showsCompass={false}
-        showsBuildings={false}
-        showsPointsOfInterest={false}
-        showsIndoors={false}
-        customMapStyle={cleanMapStyle}
-      >
-        {userPosition && (
-          <Marker 
-            coordinate={userPosition}
-            title="Votre position"
-            pinColor="blue"
-          />
-        )}
-        
-        {displayPoints.map(point => (
-          <Marker
-            key={point.id}
-            coordinate={{
-              latitude: Number(point.latitude),
-              longitude: Number(point.longitude),
-            }}
-            title={point.address}
-            pinColor={"red"}
-            onPress={() => dispatch(setSelectedStop(point.id))}
-          />
-        ))}
-      </MapView>
+		<MapView
+		style={{ flex: 1 }}
+		customMapStyle={mapStyle}
+		userInterfaceStyle="light" 
+		showsBuildings={false}
+		showsPointsOfInterest={false}
+		region={defaultCenter}
+		>
+			{userPosition && (
+			<Marker 
+				coordinate={userPosition}
+				title="Votre position"
+				pinColor="blue"
+			/>
+			)}
+			
+			{displayPoints.map(point => (
+			<Marker
+				key={point.id}
+				coordinate={{
+				latitude: Number(point.latitude),
+				longitude: Number(point.longitude),
+				}}
+				title={point.address}
+				pinColor={"red"}
+				onPress={() => dispatch(setSelectedStop(point.id))}
+			/>
+			))}
+      	</MapView>
     </View>
   );
 });
@@ -69,17 +68,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const cleanMapStyle = [
-  {
-    "featureType": "poi",
-    "elementType": "labels",
-    "stylers": [{ "visibility": "off" }]
-  },
-  {
-    "featureType": "transit",
-    "elementType": "labels.icon",
-    "stylers": [{ "visibility": "off" }]
-  }
+const mapStyle = [
+  { "featureType": "poi", "stylers": [{ "visibility": "off" }] },
+  { "featureType": "transit.station", "stylers": [{ "visibility": "off" }] },
+  { "featureType": "road", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }
 ];
 
 export default TransportMap;

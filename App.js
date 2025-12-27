@@ -1,6 +1,6 @@
 import 'react-native-reanimated';
 import { StyleSheet } from 'react-native';
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider} from 'react-native-paper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,7 +15,7 @@ function RootNavigation() {
 
   return (
     <NavigationContainer>
-        <StatusBar backgroundColor="#FFC4B6" style="dark" />
+        <StatusBar style="dark" />
         <TabNavigator/>
     </NavigationContainer>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View, ToastAndroid, Platform } from 'react-native';
 import { ActivityIndicator, Button, Text, Snackbar } from 'react-native-paper';
 import { useSelector } from 'react-redux';
