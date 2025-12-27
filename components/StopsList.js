@@ -21,17 +21,6 @@ export default function StopsList({ search, radius, stopsNb, categoryId, mode, g
 	const token = useSelector(state => state.login.token);
     const stops = useSelector((state) => mode === 'favorite' ? state.transportLocations.favoritePoints : state.transportLocations.points);
 
-	if (!token && mode === "favorite") {
-        return (
-            <Surface style={styles.emptyContainer}>
-                <Text style={styles.emptyTitle} >Connectez-vous pour voir vos favoris.</Text>
-                <Button mode="contained" onPress={goToProfile}>
-                    Se connecter
-                </Button>
-            </Surface>
-        );
-    }
-
     const getStops = async () => {
 		setLoading(true);
 		try {
@@ -62,6 +51,17 @@ export default function StopsList({ search, radius, stopsNb, categoryId, mode, g
 
 		getStops();
     }, [latitude, longitude, radius, stopsNb, categoryId, search, mode, token]);
+
+	if (!token && mode === "favorite") {
+	return (
+		<Surface style={styles.emptyContainer}>
+			<Text style={styles.emptyTitle} >Connectez-vous pour voir vos favoris.</Text>
+			<Button mode="contained" onPress={goToProfile}>
+				Se connecter
+			</Button>
+		</Surface>
+	);
+    }
 
     if (loading) return <ActivityIndicator animating={true}/> ;
 
