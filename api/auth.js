@@ -13,7 +13,7 @@ export const registerRequest = async (firstName, lastName, email, password) => {
 
 export const currentUserRequest = async (token) => {
     const response = await axios.get(`${APIURL}/users/me`, { headers: { Authorization: `Bearer ${token}`}});
-    return response.data
+    return response.data;
 }
 
 export const updateCurrentUserRequest = async (token, userData) => {

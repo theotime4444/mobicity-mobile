@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,9 +18,11 @@ export default function Stops() {
     const { isLoading, error } = useSelector((state) => state.location); 
     const dispatch = useDispatch();
 	const isFocused = useIsFocused();
+	const [search, setSearch] = useState('');
+
     return (
         <View style={styles.container}>
-			{isFocused && <TransportMap />}
+			{isFocused && <TransportMap mode="classic"/>}
 			
             {isLoading && <Text style={styles.loadingMessage}>Chargement position...</Text>}
             
@@ -43,10 +45,10 @@ export default function Stops() {
 
 
             <SafeAreaView style={styles.searchView}>
-                <Search/>
+                <Search search={search} onChange={setSearch} />
             </SafeAreaView>
-
-            <BottomPanel/>
+			
+            <BottomPanel mode="classic" search={search} />
         </View>
     );
 }

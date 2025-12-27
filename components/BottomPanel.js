@@ -12,14 +12,17 @@ import Slider from '@react-native-community/slider';
 
 import StopsList from './StopsList';
 import StopDetails from './StopDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearSelectedStop } from '../store/slice/selectedStop';
 
-export default function BottomPanel() {
+export default function BottomPanel({mode, search, goToProfile}) {
   const snapPoints = useMemo(() => ['25%', '50%', '95%'], []);
+  const dispatch = useDispatch();
 
   const [stopsNb, setStopsNb] = useState(5);
   const [radius, setRadius] = useState(5);
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
-  const [selectedStopId, setSelectedStopId] = useState(null);
+  const selectedStopId = useSelector((state => state.selectedStop.selectedStopId))
 
   const stopsNbBottomSheetModalRef = useRef(null);
   const radiusBottomSheetModalRef = useRef(null);
@@ -40,7 +43,7 @@ export default function BottomPanel() {
           {selectedStopId && (
             <IconButton
               icon="arrow-left"
-              onPress={() => setSelectedStopId(null)}
+              onPress={() => dispatch(clearSelectedStop())}
             />
           )}
 
@@ -88,13 +91,15 @@ export default function BottomPanel() {
           )}
 
           {selectedStopId ? (
-            <StopDetails stopId={selectedStopId} />
+            <StopDetails stopId={selectedStopId} mode={mode} />
           ) : (
             <StopsList
+              search={search}
               radius={radius}
               stopsNb={stopsNb}
               categoryId={selectedCategoryId}
-              onSelectStop={setSelectedStopId} 
+              mode={mode}
+              goToProfile={goToProfile}
             />
           )}
 

@@ -4,36 +4,22 @@ import TransportMap from '../components/TransportMap';
 import Search from '../components/Search';
 import BottomPanel from '../components/BottomPanel';
 import { useIsFocused } from '@react-navigation/native';
+import { useState } from 'react';
 
-export default function Favorites() {
+
+export default function Favorites({goToProfile}) {
     const isFocused = useIsFocused();
-
-    const favoritePoints = [
-        {
-            id: 1,
-            name: "Gembloux",
-            latitude:50.5602, 
-            longitude:4.6918,
-            type: "test"
-        },
-        {
-            id: 2,
-            name: "Test Bruxelles",
-            latitude: 50.8477,
-            longitude: 4.3572,
-            type: "test"
-        }
-    ];
+	const [search, setSearch] = useState('');
 
     return (
         <View style={styles.container}>
-            {isFocused && <TransportMap />}        
+            {isFocused && <TransportMap mode="favorite"/>}        
 
             <SafeAreaView style={styles.searchView}>
-                <Search/>
+                <Search value={search} onChange={setSearch} />
             </SafeAreaView>
 
-            <BottomPanel/>
+            <BottomPanel mode="favorite" search={search} goToProfile={goToProfile} />
         </View>
     );
 }

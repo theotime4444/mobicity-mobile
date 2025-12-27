@@ -1,12 +1,16 @@
-import { memo } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { memo, useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedStop } from '../store/slice/selectedStop';
 
-const TransportMap = memo(() => {
+const TransportMap = memo(({mode}) => {
   const { latitude, longitude } = useSelector((state) => state.location);
   const userPosition = latitude && longitude ? { latitude, longitude } : null;
-  const points = useSelector((state => state.transportLocations.points));
+
+  const points = useSelector((state) => mode === 'favorite' ? state.transportLocations.favoritePoints : state.transportLocations.points);
+  const selectedStopId = useSelector((state) => state.selectedStop.selectedStopId);
+  const dispatch = useDispatch();
 
 const defaultCenter = {
     latitude: userPosition?.latitude || 50.4649,
@@ -14,6 +18,13 @@ const defaultCenter = {
     latitudeDelta: 0.05,
     longitudeDelta: 0.05,
   };
+
+  const displayPoints = useMemo(() => {
+    if (!selectedStopId) {
+      return points;
+    }
+    return points.filter(point => point.id === selectedStopId);
+  }, [points, selectedStopId])
 
   return (
     <View style={styles.container}>
@@ -25,7 +36,6 @@ const defaultCenter = {
         showsPointsOfInterest={false}
         showsIndoors={false}
         customMapStyle={cleanMapStyle}
-        uer
       >
         {userPosition && (
           <Marker 
@@ -35,17 +45,16 @@ const defaultCenter = {
           />
         )}
         
-        {points.map(point => (
+        {displayPoints.map(point => (
           <Marker
             key={point.id}
             coordinate={{
               latitude: Number(point.latitude),
               longitude: Number(point.longitude),
             }}
-            title={point.name}
-            description={point.type}
-            pinColor="red"
-            onPress={() => onMarkerPress && onMarkerPress(point)}
+            title={point.address}
+            pinColor={"red"}
+            onPress={() => dispatch(setSelectedStop(point.id))}
           />
         ))}
       </MapView>
