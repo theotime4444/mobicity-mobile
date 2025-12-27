@@ -48,6 +48,7 @@ export default function StopDetails({ stopId, mode }) {
         <View style={styles.container}>
             <Text style={styles.title}>{stop?.address}</Text>
             
+            { token &&
             <Button 
                 mode="contained" 
                 onPress={handleAction}
@@ -55,7 +56,7 @@ export default function StopDetails({ stopId, mode }) {
                 buttonColor={mode === 'favorite' ? "#d32f2f" : "#6200ee"}
             >
                 {mode === 'favorite' ? "Supprimer" : "Ajouter aux favoris"}
-            </Button>
+            </Button>}
 
             <Snackbar
                 visible={visible}
