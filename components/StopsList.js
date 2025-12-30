@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTransportLocationsNearby, getFavoriteLocation } from '../api/transportLocations';
 import { setPoints, setFavoritePoints } from '../store/slice/transportLocations';
 import { setSelectedStop } from '../store/slice/selectedStop';
+import { clearError } from '../store/slice/error';
 
 const CATEGORY_ICONS = {
   1: 'bus',
@@ -16,39 +17,35 @@ const CATEGORY_ICONS = {
 export default function StopsList({ search, radius, stopsNb, categoryId, mode, goToProfile}) {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const { latitude, longitude } = useSelector(state => state.location);
+	const errorMessage = useSelector(state => state.error.error);
 	const token = useSelector(state => state.login.token);
     const stops = useSelector((state) => mode === 'favorite' ? state.transportLocations.favoritePoints : state.transportLocations.points);
 
     const getStops = async () => {
 		setLoading(true);
-		try {
-			if (mode === 'favorite'){
-				const favoriteData = await getFavoriteLocation(token)
-				dispatch(setFavoritePoints(favoriteData || []));
-			} else {
-				const data = await getTransportLocationsNearby(
-					latitude,
-					longitude,
-					radius || 5,
-					stopsNb,
-					categoryId === -1 ? null : categoryId,
-					search
-				);
-				dispatch(setPoints(data || []));
-			}
-		} catch (err) {
-			console.error(err);
-			setError("Erreur lors du chargement des arrêts");
-		} finally {
-			setLoading(false);
+		dispatch(clearError());
+		if (mode === 'favorite'){
+			const favoriteData = await getFavoriteLocation(token)
+			dispatch(setFavoritePoints(favoriteData || []));
+		} else {
+			const data = await getTransportLocationsNearby(
+				latitude,
+				longitude,
+				radius || 5,
+				stopsNb,
+				categoryId === -1 ? null : categoryId,
+				search
+			);
+			dispatch(setPoints(data || []));
 		}
+		setLoading(false);
     };
 
     useEffect(() => {
-		if (mode === 'favorite' && !token) return;
 
+		if (mode === 'favorite' && !token) return;
+		
 		getStops();
     }, [latitude, longitude, radius, stopsNb, categoryId, search, mode, token]);
 
@@ -65,7 +62,16 @@ export default function StopsList({ search, radius, stopsNb, categoryId, mode, g
 
     if (loading) return <ActivityIndicator animating={true}/> ;
 
-    if (error) return <Text style={styles.error}>{error}</Text>;
+	if (errorMessage) {
+        return (
+            <Surface style={styles.emptyContainer}>
+                <Text style={styles.errorText}>{errorMessage}</Text>
+                <Button mode="outlined" onPress={getStops} style={{marginTop: 10}}>
+                    Réessayer
+                </Button>
+            </Surface>
+        );
+    }
 
     if (!stops || stops.length === 0) 
 		return (
@@ -107,5 +113,10 @@ const styles = StyleSheet.create({
     loginBtn: {
         paddingHorizontal: 20,
         borderRadius: 25,
+    },
+    errorText: {
+        color: '#BA1A1A', // Un rouge propre
+        textAlign: 'center',
+        marginTop: 20,
     }
 });

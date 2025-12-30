@@ -3,12 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentUserRequest, loginRequest, registerRequest } from '../api/auth';
-import { setLoginSucces, setLoginError, setUser } from '../store/slice/login';
+import { setLoginSucces, setUser } from '../store/slice/login';
+import { clearError, setError } from '../store/slice/error';
 
 export default function Login() {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
-	
 
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -18,7 +18,7 @@ export default function Login() {
 	const [secureTextEntry, setSecureTextEntry] = useState(true);
 
     const dispatch = useDispatch();
-    const error = useSelector(state => state.login.error);
+    const errorMessage = useSelector(state => state.error.error);
 
     const auth = async () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;;
@@ -26,44 +26,39 @@ export default function Login() {
         const listeNoire = ` ' " \\ ; * - `;
 
         if (!emailRegex.test(email)){
-            dispatch(setLoginError("Veuillez utilisez une adresse email valide."));
+            dispatch(setError("Veuillez utilisez une adresse email valide."));
             return;
         }
 
         if (!passwordRegex.test(password)) {
-            dispatch(setLoginError("Le mot de passe doit contenir au moins 6 caractères. \n Il ne peux pas contenir : " + listeNoire));
+            dispatch(setError("Le mot de passe doit contenir au moins 6 caractères. \n Il ne peux pas contenir : " + listeNoire));
             return;
         }
 
         setLoading(true);
 		setSuccessMessage('');
-        try {
             if (isLogin) {
-                const data = await loginRequest(email, password);
-                dispatch(setLoginSucces(data.token));
-                const user = await currentUserRequest(data.token)
-                dispatch(setUser(user))
-            } else {
-                await registerRequest(firstName, lastName, email, password );
-                setSuccessMessage("Compte créé avec succès ! Connectez-vous.");
-				dispatch(setLoginError(null));
-				setIsLogin(true);
-            }
-        } catch (err) {
-            setPassword('');
+                const loginData = await loginRequest(email, password);
 
-            let message = "Une erreur est survenue.";
-            
-            if (err.response?.status === 401) {
-                message = "Email ou mot de passe incorrect.";
-            } else if (err.response?.data?.error) {
-                message = err.response.data.error;
+                if (loginData) {
+                    dispatch(setLoginSucces(loginData.token));
+                    const user = await currentUserRequest(loginData.token);
+
+                    if (user) {
+                        dispatch(setUser(user));
+                    }
+                }
+         
+            } else {
+                const registerData = await registerRequest(firstName, lastName, email, password );
+                if (registerData){
+                    setSuccessMessage("Compte créé avec succès ! Connectez-vous.");
+                    dispatch(clearError());
+                    setIsLogin(true);
+                }
             }
-            dispatch(setLoginError(message));
-            
-        } finally {
             setLoading(false);
-        }
+            setLoading(false);
     };
 
     return (
@@ -88,15 +83,15 @@ export default function Login() {
 				</View>
 			)}
 
-            {error && typeof error === 'string' && (
-                <Text style={styles.error}>{error}</Text>
+            {errorMessage && typeof errorMessage === 'string' && (
+                <Text style={styles.error}>{errorMessage}</Text>
             )}
 
             <Button mode="contained" onPress={auth} loading={loading} style={styles.button}>
                 {isLogin ? 'Se connecter' : "S'inscrire"}
             </Button>
 
-            <Button mode="text" onPress={() => setIsLogin(!isLogin)} style={styles.button}>
+            <Button mode="text" onPress={() => {setIsLogin(!isLogin), dispatch(clearError())}} style={styles.button}>
                 {isLogin ? "Pas de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}
             </Button>
         </View>

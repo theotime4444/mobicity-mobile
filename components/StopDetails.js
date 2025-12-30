@@ -1,16 +1,27 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, ToastAndroid, Platform } from 'react-native';
 import { ActivityIndicator, Button, Text, Snackbar } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTransportLocation, addFavorite, removeFavorite } from '../api/transportLocations';
+import { clearError } from '../store/slice/error';
 
 export default function StopDetails({ stopId, mode }) {
     const [loading, setLoading] = useState(true);
     const [stop, setStop] = useState(null);
     const [visible, setVisible] = useState(false);
     const [msg, setMsg] = useState("");
+    const dispatch = useDispatch();
+    const errorMessage = useSelector(state => state.error.error);
     
     const token = useSelector(state => state.login.token);
+
+    useEffect(() => {
+        if (errorMessage) {
+            notify(errorMessage)
+            dispatch(clearError());
+        }
+
+    }, [errorMessage]);
 
     useEffect(() => {
         getTransportLocation(stopId).then(data => {
@@ -29,16 +40,13 @@ export default function StopDetails({ stopId, mode }) {
     };
 
     const handleAction = async () => {
-        try {
-            if (mode === 'favorite') {
-                await removeFavorite(token, Number(stopId));
-                notify("Retiré !");
-            } else {
-                await addFavorite(token, Number(stopId));
-                notify("Ajouté !");
-            }
-        } catch (err) {
-            notify(err.response?.status === 409 ? "Déjà en favori" : "Erreur");
+        let result;
+        if (mode === 'favorite') {
+            result = await removeFavorite(token, Number(stopId));
+            if (result) notify("Retiré !");
+        } else {
+            result = await addFavorite(token, Number(stopId));
+            if (result) notify("Ajouté !");
         }
     };
 

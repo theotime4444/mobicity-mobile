@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import Login from '../components/Login'
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, TextInput, Card } from 'react-native-paper'; 
 import { logout, setUser } from '../store/slice/login';
 import { updateCurrentUserRequest } from '../api/auth';
 import { useState, useEffect } from 'react';
+import { clearError } from '../store/slice/error';
 
 export default function Profile() {
     const dispatch = useDispatch();
@@ -16,9 +17,10 @@ export default function Profile() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [secureTextEntry, setSecureTextEntry] = useState(true);
+    const errorMessage = useSelector(state => state.error.error);
 
     useEffect(() => {
-        if (user) {
+        if (user && !isUpdating) {
             setFirstName(user.firstName || '');
             setLastName(user.lastName || '');
             setEmail(user.email || '');
@@ -27,18 +29,19 @@ export default function Profile() {
 
     const confirmUpdate = async () => {
         setLoading(true);
-        try {
-            const updatedUser = {firstName, lastName, email, password}
-            await updateCurrentUserRequest(token, updatedUser);
-            
-            dispatch(setUser({firstName, lastName, email}));
-            setIsUpdating(!isUpdating);
-            setPassword('');
-        } catch (error) {
-            console.error(error);
-        } finally {
+        
+        const updatedUser = {firstName, lastName, email, password}
+        const response = await updateCurrentUserRequest(token, updatedUser);
+        
+        if (!response) {
             setLoading(false);
+            return;
         }
+            
+        dispatch(setUser({firstName, lastName, email}));
+        setIsUpdating(!isUpdating);
+        setPassword('');
+        setLoading(false);
     };
 
     if (!token) return <Login/>;
@@ -61,10 +64,14 @@ export default function Profile() {
                     right={<TextInput.Icon icon="eye" onPress={() => { setSecureTextEntry(!secureTextEntry) ;}} />}
                 />
                 
+                {errorMessage && typeof errorMessage === 'string' && (
+                <Text style={styles.error}>{errorMessage}</Text>
+                )}
+
                 <Button mode="contained" onPress={confirmUpdate} style={styles.button} loading={loading}>
                     Confirmer
                 </Button>
-                <Button mode="text" onPress={() => setIsUpdating(!isUpdating)} style={styles.button}>
+                <Button mode="text" onPress={() => {setIsUpdating(!isUpdating), dispatch(clearError())}} style={styles.button}>
                     Annuler
                 </Button>
             </View>
@@ -137,5 +144,6 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: 'bold',
         color: '#666'
-    }
+    },
+    error: { color: 'red', textAlign: 'center', marginBottom: 10 }
 });

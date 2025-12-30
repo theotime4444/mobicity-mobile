@@ -40,7 +40,7 @@ export default function TabNavigator() {
 
             try {
                 let userLocation = await Location.getCurrentPositionAsync({
-                    accuracy: Location.Accuracy.High 
+                    accuracy: Location.Accuracy.Balanced 
                 });
                 dispatch(setLocation({
                     latitude: userLocation.coords.latitude,
