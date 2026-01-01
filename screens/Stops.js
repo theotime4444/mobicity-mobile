@@ -20,6 +20,7 @@ export default function Stops() {
 	const isFocused = useIsFocused();
 	const [search, setSearch] = useState('');
 
+    // si jamais l'utilisateur n'a pas accepté de donner sa position à l'application, on affiche un message d'erreur et des instructions pour qu'il donne la permission à l'application
     return (
         <View style={styles.container}>
 			{isFocused && <TransportMap mode="classic"/>}

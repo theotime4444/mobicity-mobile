@@ -1,11 +1,6 @@
 import { useState, useMemo, useRef } from 'react';
 import { StyleSheet } from 'react-native';
-import BottomSheet, {
-	BottomSheetModal,
-  	BottomSheetModalProvider,
-  	BottomSheetScrollView,
-  	BottomSheetView
-} from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView, BottomSheetView} from '@gorhom/bottom-sheet';
 import { Chip, Text, IconButton } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import Slider from '@react-native-community/slider';
@@ -20,13 +15,17 @@ export default function BottomPanel({mode, search, goToProfile}) {
   const dispatch = useDispatch();
 
   const [stopsNb, setStopsNb] = useState(5);
-  const [radius, setRadius] = useState(5);
+
+  const [radius, setRadius] = useState(null);
+
+  // utiliser pour afficher les infos d'un stop sélectionné
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
   const selectedStopId = useSelector((state => state.selectedStop.selectedStopId))
 
   const stopsNbBottomSheetModalRef = useRef(null);
   const radiusBottomSheetModalRef = useRef(null);
 
+  // gestion du changement de catégorie, on l'utilise pour afficher une catégorie spécifique ou pas quand c'est -1
   const toggleCategory = (newId) => {
     setSelectedCategoryId(currentId => (currentId === newId ? -1 : newId));
   };

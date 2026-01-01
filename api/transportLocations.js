@@ -3,6 +3,12 @@ import { APIURL } from './config';
 import { setError } from '../store/slice/error';
 import { store } from '../store/store';
 
+// il se trouver dans api/config.js normalement
+// il faut juste mettre son adress ip à la place de IP pour pouvoir accéder à l'api
+// const APIURL = 'http://IP:3001';
+
+// on donne notre lattitude et longitude à l'api avec un rayon autour de nous et une limit de transport à récuperer on peut aussi donner la catégorie du transport (bus / train / ...) et un recheche
+// ça nous renvoie un nombre définis par limit de transport proche (qui sont dans radius)
 export const getTransportLocationsNearby = async (latitude, longitude, radius, limit, categoryId, search) => {
     try {
         const response = await axios.get(`${APIURL}/transport-locations/nearby`, {params: {latitude, longitude, radius, limit, categoryId, search}});
@@ -32,6 +38,8 @@ export const getTransportLocationsNearby = async (latitude, longitude, radius, l
     }
 }
 
+
+// on récupère un transport spécifique en fonction de son identifiant
 export const getTransportLocation = async (transportLocationId) => {
     try {
         const response = await axios.get(`${APIURL}/transport-locations/${transportLocationId}`);
@@ -64,6 +72,7 @@ export const getTransportLocation = async (transportLocationId) => {
     }
 }
 
+// ici on donne notre toekn jwt et l'api va nous rendre le tableau de transpo en favori
 export const getFavoriteLocation = async (token) => {
     if (!token) return [];
     try {
@@ -94,6 +103,8 @@ export const getFavoriteLocation = async (token) => {
     }
 }
 
+
+// on utiliser le token jwt et un identifiant de transport pour ajouter un transport en favoris au client donné 
 export const addFavorite = async (token, transportLocationId) => {
     if (!token) return;
     try {
@@ -130,6 +141,8 @@ export const addFavorite = async (token, transportLocationId) => {
     }
 }
 
+
+// on utiliser le token jwt et un identifiant de transport pour supprimer un transport des favoris pour le client correspondant au jwt
 export const removeFavorite = async (token, transportLocationId) => {
     if (!token) return;
     try {
@@ -163,6 +176,8 @@ export const removeFavorite = async (token, transportLocationId) => {
 	}
 }
 
+
+// Ici on test si le favoris est dans la tables des favoris de l'utilisateur correspondant au jwt
 export const favoriteExists = async (token, transportLocationId) => {
     if (!token) return false;
     try {

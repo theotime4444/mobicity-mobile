@@ -19,6 +19,7 @@ const defaultCenter = {
     longitudeDelta: 0.05,
   };
 
+  // affichage des points sur la map. Si un transport est sélectionné, on supprime les autres pour le mettre en évidence
   const displayPoints = useMemo(() => {
     if (!selectedStopId) {
       return points;
@@ -26,6 +27,7 @@ const defaultCenter = {
     return points.filter(point => point.id === selectedStopId);
   }, [points, selectedStopId])
 
+  // on utilise un customMapStyle pour avoir une map clean sans les points d'intérêts / nom de rue / magasin / etc
   return (
     <View style={styles.container}>
 		<MapView

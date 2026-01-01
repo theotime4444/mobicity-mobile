@@ -23,23 +23,29 @@ export default function Login() {
     const auth = async () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;;
         const passwordRegex = /^(?=.{6,})[^'"\\;*\-]*$/;
+        // les caractères spéciaux qu'on veut éviter dans le mot de passe
         const listeNoire = ` ' " \\ ; * - `;
-
+        
+        // on fait une vérification sur le format de l'email
         if (!emailRegex.test(email)){
             dispatch(setError("Veuillez utilisez une adresse email valide."));
             return;
         }
 
+        // vérification sur le format du password
         if (!passwordRegex.test(password)) {
             dispatch(setError("Le mot de passe doit contenir au moins 6 caractères. \n Il ne peux pas contenir : " + listeNoire));
             return;
         }
-
+        
         setLoading(true);
 		setSuccessMessage('');
+            // on regarde si on est bien dans la "page" de connexion
             if (isLogin) {
+                // requête de connexion à l'API
                 const loginData = await loginRequest(email, password);
-
+                
+                // si on est connecté, on récupère le token et on récupère les informations de l'utilisateur
                 if (loginData) {
                     dispatch(setLoginSucces(loginData.token));
                     const user = await currentUserRequest(loginData.token);
@@ -48,9 +54,12 @@ export default function Login() {
                         dispatch(setUser(user));
                     }
                 }
-         
+            
+            // si on n'est pas dans la "page" de connexion c'est que l'utilisateur veut se connecter
             } else {
                 const registerData = await registerRequest(firstName, lastName, email, password );
+
+                // une fois connecté, on confirme la création du compte
                 if (registerData){
                     setSuccessMessage("Compte créé avec succès ! Connectez-vous.");
                     dispatch(clearError());

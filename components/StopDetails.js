@@ -14,7 +14,8 @@ export default function StopDetails({ stopId, mode }) {
     const errorMessage = useSelector(state => state.error.error);
     
     const token = useSelector(state => state.login.token);
-
+    
+    // si erreur lors de l'ajout de favoris ou la suppression de favoris on fait utilise un message
     useEffect(() => {
         if (errorMessage) {
             notify(errorMessage)
@@ -30,26 +31,30 @@ export default function StopDetails({ stopId, mode }) {
         }).catch(() => setLoading(false));
     }, [stopId]);
 
+    // on crée le message "flottant", on lui donne un texte et une durée (2 secondes). On utilise aussi un message si on n'est pas sur Android
     const notify = (text) => {
         if (Platform.OS === 'android') {
-            ToastAndroid.show(text, ToastAndroid.SHORT);
+            ToastAndroid.show(text, 2000);
         } else {
             setMsg(text);
             setVisible(true);
         }
     };
 
+
+    // on utilise un mode qui nous dit si on est sur la page favoris ou stops, et quand on ajoute/supprime un favori, on utilise Notify pour confirmer l'ajout/suppression
     const handleAction = async () => {
         let result;
         if (mode === 'favorite') {
-            result = await removeFavorite(token, Number(stopId));
+            result = await removeFavorite(token, stopId);
             if (result) notify("Retiré !");
         } else {
-            result = await addFavorite(token, Number(stopId));
+            result = await addFavorite(token, stopId);
             if (result) notify("Ajouté !");
         }
     };
 
+    // si les détails sont en chargement, on affiche un symbole de chargement
     if (loading) return <ActivityIndicator style={styles.center} />;
 
     return (
@@ -71,7 +76,7 @@ export default function StopDetails({ stopId, mode }) {
                 onDismiss={() => setVisible(false)}
                 duration={2000}
             >
-                {msg}
+            {msg}
             </Snackbar>
         </View>
     );

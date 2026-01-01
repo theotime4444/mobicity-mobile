@@ -29,6 +29,9 @@ export default function TabNavigator() {
         setIndex(newIndex);
     };
 
+
+    // ce bout de code à été inspiré par l'IA pour la demande de permission 
+    // c'est ici que nous venons récupérer la position de l'utilisateur. nous la récupérerons au lancement de l'application. une fois récuperer on la mets dans le store
     useEffect(() => {
         const fetchUserLocation = async () => {
             dispatch(fetchLocation()); 

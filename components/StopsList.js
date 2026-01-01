@@ -22,12 +22,16 @@ export default function StopsList({ search, radius, stopsNb, categoryId, mode, g
 	const token = useSelector(state => state.login.token);
     const stops = useSelector((state) => mode === 'favorite' ? state.transportLocations.favoritePoints : state.transportLocations.points);
 
+	// C'est ici qu'on va chercher les stops sur la bd
     const getStops = async () => {
 		setLoading(true);
 		dispatch(clearError());
+		// si le mode est favorite, on insère les stop favoris dans le store
 		if (mode === 'favorite'){
 			const favoriteData = await getFavoriteLocation(token)
 			dispatch(setFavoritePoints(favoriteData || []));
+
+		// si le mode n'est pas favorite, on insère les stops proches qui correspondent aux paramètres
 		} else {
 			const data = await getTransportLocationsNearby(
 				latitude,
@@ -43,12 +47,12 @@ export default function StopsList({ search, radius, stopsNb, categoryId, mode, g
     };
 
     useEffect(() => {
-
 		if (mode === 'favorite' && !token) return;
-		
 		getStops();
     }, [latitude, longitude, radius, stopsNb, categoryId, search, mode, token]);
 
+	// si l'utilisateur n'est pas connecté, on lui met un message et un bouton de redirection pour qu'il se connecte
+	// une fois connecté, il aura accès aux favoris
 	if (!token && mode === "favorite") {
 	return (
 		<Surface style={styles.emptyContainer}>
@@ -62,6 +66,7 @@ export default function StopsList({ search, radius, stopsNb, categoryId, mode, g
 
     if (loading) return <ActivityIndicator animating={true}/> ;
 
+	// si une erreur survient on met un bouton qui permet de réessayer 
 	if (errorMessage) {
         return (
             <Surface style={styles.emptyContainer}>
@@ -73,6 +78,8 @@ export default function StopsList({ search, radius, stopsNb, categoryId, mode, g
         );
     }
 
+
+	// dans le cas où le nombre de stop en favoris ou qui correspondent aux paramètres est 0, on affiche un message d'informations
     if (!stops || stops.length === 0) 
 		return (
 			<Text style={{textAlign: 'center', marginTop: 20}}>
