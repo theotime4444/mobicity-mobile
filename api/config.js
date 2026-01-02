@@ -1,1 +1,1 @@
-export const APIURL = 'http://IP:3001';
+export const APIURL = 'http://192.168.0.6:3001';

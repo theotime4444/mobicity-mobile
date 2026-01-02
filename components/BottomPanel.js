@@ -16,16 +16,19 @@ export default function BottomPanel({mode, search, goToProfile}) {
 
   const [stopsNb, setStopsNb] = useState(5);
 
-  const [radius, setRadius] = useState(null);
+  const [radius, setRadius] = useState(5);
 
-  // utiliser pour afficher les infos d'un stop sélectionné
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
+
+  // utilisé pour afficher les infos d'un arrêt sélectionné
   const selectedStopId = useSelector((state => state.selectedStop.selectedStopId))
 
+  // utilisé pour enregistrer la référence des bottomsheets afind de les faire apparaitre sur base d'un click de bouton
   const stopsNbBottomSheetModalRef = useRef(null);
   const radiusBottomSheetModalRef = useRef(null);
 
   // gestion du changement de catégorie, on l'utilise pour afficher une catégorie spécifique ou pas quand c'est -1
+  // sert aussi à changer le visuel du bouton sélectionné
   const toggleCategory = (newId) => {
     setSelectedCategoryId(currentId => (currentId === newId ? -1 : newId));
   };
@@ -53,39 +56,48 @@ export default function BottomPanel({mode, search, goToProfile}) {
 							nestedScrollEnabled
 							showsHorizontalScrollIndicator={false}
             >
-							<Chip 
-								icon="arrow-down-drop-circle-outline"
-								onPress={() => stopsNbBottomSheetModalRef.current?.present()}
-							>
-								{stopsNb} arrêts
-							</Chip>
-							<Chip
-								icon="arrow-down-drop-circle-outline"
-								onPress={() => radiusBottomSheetModalRef.current?.present()}
-							>
-								Rayon : {radius} km
-							</Chip>
-							<Chip
-								mode={selectedCategoryId === 1 ? 'flat' : 'outlined'}
-								icon="bus"
-								onPress={() => toggleCategory(1)}
-							>
-								Bus
-							</Chip>
-							<Chip
-								mode={selectedCategoryId === 2 ? 'flat' : 'outlined'}
-								icon="train"
-								onPress={() => toggleCategory(2)}
-							>
-								Train
-							</Chip>
-							<Chip
-								mode={selectedCategoryId === 3 ? 'flat' : 'outlined'}
-								icon="car"
-								onPress={() => toggleCategory(3)}
-							>
-								Cambio
-							</Chip>
+							
+              {
+                mode == "classic" && (
+                  <>
+                    <Chip 
+                      icon="arrow-down-drop-circle-outline"
+                      onPress={() => stopsNbBottomSheetModalRef.current?.present()}
+                    >
+                      {stopsNb} arrêts
+                    </Chip>
+                    <Chip
+                    icon="arrow-down-drop-circle-outline"
+                    onPress={() => radiusBottomSheetModalRef.current?.present()}
+                    >
+                      Rayon : {radius} km
+                    </Chip>
+                    <Chip
+                      mode={selectedCategoryId === 1 ? 'flat' : 'outlined'}
+                      icon="bus"
+                      onPress={() => toggleCategory(1)}
+                    >
+                      Bus
+                    </Chip>
+                    <Chip
+                      mode={selectedCategoryId === 2 ? 'flat' : 'outlined'}
+                      icon="train"
+                      onPress={() => toggleCategory(2)}
+                    >
+                      Train
+                    </Chip>
+                    <Chip
+                      mode={selectedCategoryId === 3 ? 'flat' : 'outlined'}
+                      icon="car"
+                      onPress={() => toggleCategory(3)}
+                    >
+                      Cambio
+                    </Chip>
+                  </>
+                )
+              }
+							
+							
 						</ScrollView>
           )}
 

@@ -5,9 +5,9 @@ import { store } from '../store/store';
 
 // il faut juste mettre son adress ip à la place de IP pour pouvoir accéder à l'api
 // const APIURL = 'http://IP:3001';
-// il se trouver dans api/config.js normalement
+// il se trouve dans api/config.js normalement
 
-// on donne notre lattitude et longitude à l'api avec un rayon autour de nous et une limit de transport à récuperer on peut aussi donner la catégorie du transport (bus / train / ...) et un recheche
+// on donne notre latitude et longitude à l'api avec un rayon de recherche et une limite de points de transport à récuperer on peut aussi donner la catégorie du transport (bus / train / ...) et un recheche
 // ça nous renvoie un nombre définis par limit de transport proche (qui sont dans radius)
 export const getTransportLocationsNearby = async (latitude, longitude, radius, limit, categoryId, search) => {
     try {
@@ -72,7 +72,7 @@ export const getTransportLocation = async (transportLocationId) => {
     }
 }
 
-// ici on donne notre toekn jwt et l'api va nous rendre le tableau de transpo en favori
+// ici on donne notre toekn jwt et l'api va nous rendre le tableau de transports en favori
 export const getFavoriteLocation = async (token) => {
     if (!token) return [];
     try {
@@ -142,7 +142,7 @@ export const addFavorite = async (token, transportLocationId) => {
 }
 
 
-// on utiliser le token jwt et un identifiant de transport pour supprimer un transport des favoris pour le client correspondant au jwt
+// on utilise le token jwt et un identifiant de transport pour supprimer un transport des favoris pour le client correspondant au jwt
 export const removeFavorite = async (token, transportLocationId) => {
     if (!token) return;
     try {
@@ -187,5 +187,3 @@ export const favoriteExists = async (token, transportLocationId) => {
         return false;
     }
 }
-
-

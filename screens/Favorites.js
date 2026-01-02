@@ -1,7 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import TransportMap from '../components/TransportMap';
-import Search from '../components/Search';
 import BottomPanel from '../components/BottomPanel';
 import { useIsFocused } from '@react-navigation/native';
 import { useState } from 'react';
@@ -13,11 +11,7 @@ export default function Favorites({goToProfile}) {
 
     return (
         <View style={styles.container}>
-            {isFocused && <TransportMap mode="favorite"/>}        
-
-            <SafeAreaView style={styles.searchView}>
-                <Search value={search} onChange={setSearch} />
-            </SafeAreaView>
+            {isFocused && <TransportMap mode="favorite"/>}     
 
             <BottomPanel mode="favorite" search={search} goToProfile={goToProfile} />
         </View>

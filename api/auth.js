@@ -6,9 +6,9 @@ import { store } from '../store/store';
 
 // il faut juste mettre son adress ip à la place de IP pour pouvoir accéder à l'api
 // const APIURL = 'http://IP:3001';
-// il se trouver dans api/config.js normalement
+// il se trouve dans api/config.js normalement
 
-// envoi les info de login à l'api et elle rend le toke jwt
+// envoie les info de login à l'api et elle rend le token jwt
 export const loginRequest = async (email, password) => {
 	try {
 		const response = await axios.post(`${APIURL}/auth/login`, {email, password});
@@ -77,7 +77,7 @@ export const registerRequest = async (firstName, lastName, email, password) => {
 }
 
 
-// ici on envoie le token jwt à l'api pour récuperer les info de l'utilisateur
+// ici on envoie le token jwt à l'api pour récuperer les infos de l'utilisateur
 export const currentUserRequest = async (token) => {
     try {
 		const response = await axios.get(`${APIURL}/users/me`, { headers: { Authorization: `Bearer ${token}`}});
