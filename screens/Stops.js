@@ -13,12 +13,10 @@ import { fetchLocationRetry } from '../store/slice/location';
 
 
 export default function Stops() {
-    const snapPoints = useMemo(() => ['25%', '95%'], []);
-    const [stopsNb, setStopsNb] = useState(5);
     const { isLoading, error } = useSelector((state) => state.location); 
     const dispatch = useDispatch();
-	const isFocused = useIsFocused();
-	const [search, setSearch] = useState('');
+    const isFocused = useIsFocused();
+    const [search, setSearch] = useState('');
 
     // si jamais l'utilisateur n'a pas accepté de donner sa position à l'application, on affiche un message d'erreur et des instructions pour qu'il donne la permission à l'application
     return (
