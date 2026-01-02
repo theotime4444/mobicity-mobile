@@ -3,9 +3,10 @@ import { APIURL } from './config';
 import { setError } from '../store/slice/error';
 import { store } from '../store/store';
 
-// il se trouver dans api/config.js normalement
+
 // il faut juste mettre son adress ip à la place de IP pour pouvoir accéder à l'api
 // const APIURL = 'http://IP:3001';
+// il se trouver dans api/config.js normalement
 
 // envoi les info de login à l'api et elle rend le toke jwt
 export const loginRequest = async (email, password) => {

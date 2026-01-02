@@ -3,9 +3,9 @@ import { APIURL } from './config';
 import { setError } from '../store/slice/error';
 import { store } from '../store/store';
 
-// il se trouver dans api/config.js normalement
 // il faut juste mettre son adress ip à la place de IP pour pouvoir accéder à l'api
 // const APIURL = 'http://IP:3001';
+// il se trouver dans api/config.js normalement
 
 // on donne notre lattitude et longitude à l'api avec un rayon autour de nous et une limit de transport à récuperer on peut aussi donner la catégorie du transport (bus / train / ...) et un recheche
 // ça nous renvoie un nombre définis par limit de transport proche (qui sont dans radius)
