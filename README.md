@@ -18,7 +18,7 @@ https://github.com/theotime4444/mobicity-api
 Dans le dossier de l'api fait un docker compose up et attendez que le terminal dise que la documentation swagger est générée
 
 Une fois la base de données construite, vous pouvez ouvrir l'application mobile dans un IDE 
-- Il vous faudra aller sur le fichier config.js et y changer l'IP pour votre adresse IP afin d'accéder à l'API
+- Il vous faudra aller sur le fichier config.js qui se trouver dans le dossier api et y changer l'IP pour votre adresse IP afin d'accéder à l'API
 
 et faire les commandes suivantes : 
 - **npm install** (installer les dépendances)
