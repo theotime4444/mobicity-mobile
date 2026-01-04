@@ -143,7 +143,7 @@ export default function BottomPanel({mode, search, goToProfile}) {
           <BottomSheetView>
             <Text>Rayon dans lequel chercher des arrêts :</Text>
             <Slider
-              minimumValue={5}
+              minimumValue={10}
               maximumValue={500}
               step={10}
               value={radius}
