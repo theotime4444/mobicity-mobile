@@ -16,7 +16,7 @@ export default function BottomPanel({mode, search, goToProfile}) {
 
   const [stopsNb, setStopsNb] = useState(5);
 
-  const [radius, setRadius] = useState(5);
+  const [radius, setRadius] = useState(10);
 
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
 
