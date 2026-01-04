@@ -58,7 +58,7 @@ export default function BottomPanel({mode, search, goToProfile}) {
             >
 							
               {
-                mode == "classic" && (
+                (mode == "classic" || mode == "favorite") && (
                   <>
                     <Chip 
                       icon="arrow-down-drop-circle-outline"

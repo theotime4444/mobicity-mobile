@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, Surface, Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTransportLocationsNearby, getFavoriteLocation } from '../api/transportLocations';
+import { getTransportLocationsNearby, getFavoriteLocationsNearby } from '../api/transportLocations';
 import { setPoints, setFavoritePoints } from '../store/slice/transportLocations';
 import { setSelectedStop } from '../store/slice/selectedStop';
 import { clearError } from '../store/slice/error';
@@ -26,9 +26,17 @@ export default function StopsList({ search, radius, stopsNb, categoryId, mode, g
     const getStops = async () => {
 		setLoading(true);
 		dispatch(clearError());
-		// si le mode est favorite, on insère les stop favoris dans le store
+		// si le mode est favorite, on insère les stop favoris proches dans le store avec filtrage
 		if (mode === 'favorite'){
-			const favoriteData = await getFavoriteLocation(token)
+			const favoriteData = await getFavoriteLocationsNearby(
+				token,
+				latitude,
+				longitude,
+				radius || 5,
+				stopsNb,
+				categoryId === -1 ? null : categoryId,
+				search
+			);
 			dispatch(setFavoritePoints(favoriteData || []));
 
 		// si le mode n'est pas favorite, on insère les stops proches qui correspondent aux paramètres

@@ -187,3 +187,41 @@ export const favoriteExists = async (token, transportLocationId) => {
         return false;
     }
 }
+
+// on récupère les favoris les plus proches avec filtrage (rayon, limite, catégorie, recherche)
+// similaire à getTransportLocationsNearby mais pour les favoris de l'utilisateur
+export const getFavoriteLocationsNearby = async (token, latitude, longitude, radius, limit, categoryId, search) => {
+    if (!token) return [];
+    try {
+        const response = await axios.get(`${APIURL}/v1/favorites/me/nearby`, {
+            params: { latitude, longitude, radius, limit, categoryId, search },
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (err) {
+        let errorMessage = "Erreur lors de la récupération des favoris";
+
+		if (err.response) {
+			const status = err.response.status;
+
+			switch(status){
+				case 400:
+					errorMessage = "Paramètres invalides";
+					break;
+				case 401:
+					errorMessage = "Opération non authorisée";
+					break;
+				case 500:
+					errorMessage = "Le serveur rencontre un problème, réessayer plus tard";
+					break;
+				default:
+					errorMessage = "Une erreur est survenue";
+			}
+		} else if (err.request) {
+			errorMessage = "Impossible de joindre le serveur. vérifiez votre connexion";
+		}
+
+		store.dispatch(setError(errorMessage));
+		return null;
+    }
+}
