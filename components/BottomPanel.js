@@ -144,8 +144,8 @@ export default function BottomPanel({mode, search, goToProfile}) {
             <Text>Rayon dans lequel chercher des arrêts :</Text>
             <Slider
               minimumValue={5}
-              maximumValue={50}
-              step={5}
+              maximumValue={500}
+              step={10}
               value={radius}
               onSlidingComplete={setRadius}
             />

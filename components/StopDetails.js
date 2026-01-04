@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, ToastAndroid, Platform } from 'react-native';
-import { ActivityIndicator, Button, Text, Snackbar } from 'react-native-paper';
+import { ActivityIndicator, Button, Text, Snackbar, Icon } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTransportLocation, addFavorite, removeFavorite } from '../api/transportLocations';
 import { clearError } from '../store/slice/error';
+
+const CATEGORY_ICONS = {
+  1: 'bus',
+  2: 'train',
+  3: 'car',
+};
+
+const CATEGORY_LABELS = {
+  1: 'Bus',
+  2: 'Train',
+  3: 'Cambio',
+};
 
 export default function StopDetails({ stopId, mode }) {
     const [loading, setLoading] = useState(true);
@@ -54,12 +66,57 @@ export default function StopDetails({ stopId, mode }) {
         }
     };
 
+    // Fonction pour formater les coordonnées GPS
+    const formatCoordinates = (lat, lon) => {
+        if (!lat || !lon) return null;
+        const latNum = parseFloat(lat);
+        const lonNum = parseFloat(lon);
+        if (isNaN(latNum) || isNaN(lonNum)) return null;
+        const latDir = latNum >= 0 ? 'N' : 'S';
+        const lonDir = lonNum >= 0 ? 'E' : 'O';
+        return `${Math.abs(latNum).toFixed(4)}°${latDir}, ${Math.abs(lonNum).toFixed(4)}°${lonDir}`;
+    };
+
     // si les détails sont en chargement, on affiche un symbole de chargement
     if (loading) return <ActivityIndicator style={styles.center} />;
+
+    const categoryId = stop?.category?.id;
+    const categoryIcon = categoryId ? CATEGORY_ICONS[categoryId] : null;
+    // Utiliser category.name si disponible, sinon fallback sur le mapping
+    const categoryName = stop?.category?.name || (categoryId ? CATEGORY_LABELS[categoryId] : null);
+    const coordinates = formatCoordinates(stop?.latitude, stop?.longitude);
+    const vehicleBrand = stop?.vehicle?.brand;
+    const vehicleModel = stop?.vehicle?.model;
+    const hasVehicleInfo = vehicleBrand || vehicleModel;
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{stop?.address}</Text>
+            
+            {categoryName && (
+                <View style={styles.infoRow}>
+                    <Icon icon={categoryIcon} size={20} />
+                    <Text style={styles.infoText}>{categoryName}</Text>
+                </View>
+            )}
+
+            {coordinates && (
+                <View style={styles.infoRow}>
+                    <Icon icon="map-marker" size={20} />
+                    <Text style={styles.infoText}>{coordinates}</Text>
+                </View>
+            )}
+
+            {hasVehicleInfo && (
+                <View style={styles.infoRow}>
+                    <Icon icon="car" size={20} />
+                    <Text style={styles.infoText}>
+                        {vehicleBrand && vehicleModel 
+                            ? `${vehicleBrand} ${vehicleModel}`
+                            : vehicleBrand || vehicleModel}
+                    </Text>
+                </View>
+            )}
             
             { token &&
             <Button 
@@ -94,6 +151,17 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 15,
+    },
+    infoRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 12,
+        gap: 8,
+    },
+    infoText: {
+        fontSize: 15,
+        color: '#666',
+        flex: 1,
     },
     btn: {
         borderRadius: 5,
